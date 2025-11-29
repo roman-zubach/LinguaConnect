@@ -32,14 +32,13 @@ const CustomButton: React.FC<Props> = ({
 }) => {
     const bgMap: Record<Variant, string> = {
         primary: colors.primary,
-        secondary: colors.text,
+        secondary: colors.surface,
     };
 
     const isSecondary = variant === 'secondary';
 
     const sizeStyle = size === 'sm' ? styles.buttonSm : styles.buttonMd;
     const borderStyle = isSecondary ? styles.secondary : undefined;
-    const textColor = isSecondary ? colors.background : colors.text;
 
     return (
         <TouchableOpacity
@@ -57,7 +56,7 @@ const CustomButton: React.FC<Props> = ({
                 style,
             ]}
         >
-            {children ? children : <Text style={[styles.text, { color: textColor }]}>{title}</Text>}
+            {children ? children : <Text style={styles.text}>{title}</Text>}
         </TouchableOpacity>
     );
 };

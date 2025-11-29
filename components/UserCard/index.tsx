@@ -24,7 +24,6 @@ const UserCard: React.FC<Props> = ({
     onChat,
 }) => (
     <View style={styles.card}>
-        {/* Ліва частина: аватар + текст */}
         <View style={styles.left}>
             <View style={styles.avatarWrapper}>
                 <Image source={{ uri: imageUrl }} style={styles.image} />

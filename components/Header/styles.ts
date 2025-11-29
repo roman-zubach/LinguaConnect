@@ -7,13 +7,11 @@ import { fontSizes, fontWeights } from '@/constants/typography';
 export const styles = StyleSheet.create({
     container: {
         height: 56,
-        backgroundColor: colors.surface,
-        borderBottomWidth: 1,
-        borderColor: colors.border,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: spacing.md,
+        marginBottom: spacing.lg,
     },
 
     leftGroup: {

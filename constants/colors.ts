@@ -1,5 +1,5 @@
 export default {
-    background: '#0E0F13',
+    background: '#1B1E25',
     surface: '#1F2229',
     card: '#2A2D35',
     text: '#FFFFFF',

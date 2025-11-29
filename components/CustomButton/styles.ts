@@ -37,5 +37,6 @@ export const styles = StyleSheet.create({
 
     text: {
         ...textStyles.button,
+        color: colors.text,
     },
 });

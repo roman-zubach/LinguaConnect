@@ -1,32 +1,25 @@
 import React from 'react';
 
-import { FlatList, ListRenderItem, Text } from 'react-native';
+import { ActivityIndicator, FlatList, ListRenderItem } from 'react-native';
 
 import { router } from 'expo-router';
 
 import UserCard from '@/components/UserCard';
-import colors from '@/constants/colors';
 import { spacing } from '@/constants/layout';
-import { fontSizes } from '@/constants/typography';
-
-export type UserItem = {
-    id: number;
-    name: string;
-    flag?: string;
-    subtitle: string;
-    imageUrl: string;
-    online?: boolean;
-};
+import { UserItem } from '@/services/user/type';
 
 type Props = {
     users: UserItem[];
+    loadMore?: () => void;
+    loadingMore?: boolean;
+    showFooter?: boolean;
 };
 
-const UsersList: React.FC<Props> = ({ users }) => {
-    const openChat = (userId: number) => () => {
+const UsersList: React.FC<Props> = ({ users, loadMore, loadingMore = false }) => {
+    const openChat = (chatId: string) => () => {
         router.push({
-            pathname: '/chat/[userId]',
-            params: { userId: String(userId) }, // краще явно в строку
+            pathname: '/chat/[chatId]',
+            params: { chatId },
         });
     };
 
@@ -37,7 +30,7 @@ const UsersList: React.FC<Props> = ({ users }) => {
             subtitle={item.subtitle}
             imageUrl={item.imageUrl}
             online={item.online}
-            onChat={openChat(item.id)}
+            onChat={openChat(item.chatId)}
         />
     );
 
@@ -46,21 +39,13 @@ const UsersList: React.FC<Props> = ({ users }) => {
             <FlatList
                 data={users}
                 renderItem={renderItem}
-                keyExtractor={item => String(item.id)}
+                keyExtractor={item => item.id}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={loadingMore ? <ActivityIndicator size="small" /> : null}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 16 }}
+                contentContainerStyle={{ paddingBottom: spacing.sm }}
             />
-
-            <Text
-                style={{
-                    textAlign: 'center',
-                    marginTop: spacing.lg,
-                    fontSize: fontSizes.sm,
-                    color: colors.subtext,
-                }}
-            >
-                Scroll to see more partners
-            </Text>
         </>
     );
 };

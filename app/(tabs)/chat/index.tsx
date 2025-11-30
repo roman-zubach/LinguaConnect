@@ -1,49 +1,39 @@
 import React from 'react';
 
-import { Text } from 'react-native';
+import { Text, ActivityIndicator, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from '@/components/Header';
-import UsersList, { UserItem } from '@/components/UserList';
+import UsersList from '@/components/UserList';
 import colors from '@/constants/colors';
+import { usePaginatedUsers } from '@/hooks/usePaginatedUsers';
 
-const chats: UserItem[] = [
-    {
-        id: 1,
-        name: 'Sofia M.',
-        flag: '🇵🇱',
-        subtitle: 'How are you today?',
-        imageUrl: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
-        online: true,
-    },
-    {
-        id: 2,
-        name: 'John Doe',
-        flag: '🇺🇸',
-        subtitle: "Sure — let's practice tonight!",
-        imageUrl: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg',
-        online: false,
-    },
-    {
-        id: 3,
-        name: 'Emilia R.',
-        flag: '🇩🇪',
-        subtitle: 'Thanks for your help yesterday 😊',
-        imageUrl: 'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg',
-        online: true,
-    },
-];
+const ChatListScreen: React.FC = () => {
+    const { users, loading, loadingMore, hasMore, loadMore } = usePaginatedUsers({
+        pageSize: 10,
+    });
 
-const ChatListScreen: React.FC = () => (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-        <Header
-            title="Chat"
-            icon={<Text style={{ fontSize: 16, color: colors.primary }}>💬</Text>}
-        />
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+            <Header
+                title="Chat"
+                icon={<Text style={{ fontSize: 16, color: colors.primary }}>💬</Text>}
+            />
 
-        <UsersList users={chats} />
-    </SafeAreaView>
-);
+            {loading && users.length === 0 ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size="large" color={colors.primary} />
+                </View>
+            ) : (
+                <UsersList
+                    users={users}
+                    loadMore={hasMore ? loadMore : undefined}
+                    loadingMore={loadingMore}
+                />
+            )}
+        </SafeAreaView>
+    );
+};
 
 export default ChatListScreen;

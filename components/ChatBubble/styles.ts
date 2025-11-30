@@ -31,4 +31,10 @@ export const styles = StyleSheet.create({
     textOwn: {
         color: colors.text,
     },
+    time: {
+        fontSize: 10,
+        color: colors.text,
+        marginTop: 4,
+        alignSelf: 'flex-end',
+    },
 });

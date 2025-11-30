@@ -27,7 +27,7 @@ const RootLayout: React.FC = () => (
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
             <Stack.Screen
-                name="chat/[userId]"
+                name="chat/[chatId]"
                 options={{
                     headerShown: false,
                 }}

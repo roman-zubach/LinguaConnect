@@ -1,35 +1,37 @@
 import React from 'react';
 
-import { Text } from 'react-native';
+import { Text, ActivityIndicator, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from '@/components/Header';
 import InputField from '@/components/InputField';
-import UsersList, { UserItem } from '@/components/UserList';
+import UsersList from '@/components/UserList';
 import colors from '@/constants/colors';
+import { usePaginatedUsers } from '@/hooks/usePaginatedUsers';
 
 type SearchFavoritesValue = {
     query: string;
 };
-
-const mockUsers: UserItem[] = [
-    {
-        id: 1,
-        name: 'John Doe',
-        flag: '🇺🇸',
-        subtitle: 'Fluent in English · Learning Spanish',
-        imageUrl: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-        online: true,
-    },
-];
 
 const FavoritesScreen = () => {
     const [filtersState, setFiltersState] = React.useState<SearchFavoritesValue>({
         query: '',
     });
 
-    const handleQueryChange = (query: string) => setFiltersState({ query });
+    const learningLanguage = filtersState.query.trim() || undefined;
+
+    const { users, loading, loadingMore, hasMore, loadMore } = usePaginatedUsers({
+        filters: {
+            learningLanguage,
+        },
+        onlyFavorite: true,
+        pageSize: 10,
+    });
+
+    const handleQueryChange = (query: string) => {
+        setFiltersState({ query });
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
@@ -44,7 +46,17 @@ const FavoritesScreen = () => {
                 onChangeText={handleQueryChange}
             />
 
-            <UsersList users={mockUsers} />
+            {loading && users.length === 0 ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size="large" color={colors.primary} />
+                </View>
+            ) : (
+                <UsersList
+                    users={users}
+                    loadMore={hasMore ? loadMore : undefined}
+                    loadingMore={loadingMore}
+                />
+            )}
         </SafeAreaView>
     );
 };

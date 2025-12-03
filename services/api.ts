@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import Toast from 'react-native-toast-message';
 
 const BASE_URL = 'https://692c2c41c829d464006ebbd2.mockapi.io';

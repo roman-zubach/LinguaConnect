@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, Image } from 'react-native';
 
 import CustomButton from '@/components/CustomButton';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 import { styles } from './styles';
 
@@ -22,26 +23,41 @@ const UserCard: React.FC<Props> = ({
     imageUrl,
     online = true,
     onChat,
-}) => (
-    <View style={styles.card}>
-        <View style={styles.left}>
-            <View style={styles.avatarWrapper}>
-                <Image source={{ uri: imageUrl }} style={styles.image} />
-                <View style={[styles.dot, online ? styles.dotOnline : styles.dotOffline]} />
+}) => {
+    const colors = useThemeColors();
+
+    return (
+        <View style={[styles.card, { backgroundColor: colors.card }]}>
+            <View style={styles.left}>
+                <View style={styles.avatarWrapper}>
+                    <Image source={{ uri: imageUrl }} style={styles.image} />
+
+                    <View
+                        style={[
+                            styles.dot,
+                            {
+                                borderColor: colors.card,
+                                backgroundColor: online ? colors.accent : colors.danger,
+                            },
+                        ]}
+                    />
+                </View>
+
+                <View style={styles.textBlock}>
+                    <Text style={[styles.name, { color: colors.text }]}>
+                        {name}
+                        <Text style={styles.flag}>{flag}</Text>
+                    </Text>
+
+                    <Text style={[styles.subtitle, { color: colors.subtext }]} numberOfLines={1}>
+                        {subtitle}
+                    </Text>
+                </View>
             </View>
 
-            <View style={styles.textBlock}>
-                <Text style={styles.name}>
-                    {name} <Text style={styles.flag}>{flag}</Text>
-                </Text>
-                <Text style={styles.subtitle} numberOfLines={1}>
-                    {subtitle}
-                </Text>
-            </View>
+            <CustomButton title="Say Hi!" onPress={onChat} style={styles.button} />
         </View>
-
-        <CustomButton title="Say Hi!" onPress={onChat} style={styles.button} />
-    </View>
-);
+    );
+};
 
 export default UserCard;

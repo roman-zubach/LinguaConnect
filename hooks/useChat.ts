@@ -3,13 +3,12 @@ import { useEffect, useState } from 'react';
 import { fetchMessages } from '@/services/message/api/fetchMessages';
 import { sendMessage as sendMessageApi } from '@/services/message/api/sendMessage';
 import type { Message } from '@/services/message/type';
-import { fetchUsers } from '@/services/user/api/fetchUsers';
-import type { UserItem } from '@/services/user/type';
+import { useAppSelector } from '@/store/hooks';
 
 const PAGE_SIZE = 20;
 
 export function useChat(chatId?: string) {
-    const [user, setUser] = useState<UserItem | null>(null);
+    const user = useAppSelector(state => state.users.items.find(user => user.chatId === chatId));
     const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -25,10 +24,6 @@ export function useChat(chatId?: string) {
             setHasMore(true);
 
             try {
-                const users = await fetchUsers();
-                const found = users.find(u => u.chatId === chatId);
-                setUser(found ?? null);
-
                 const msgs = await fetchMessages(chatId, {
                     page: 1,
                     limit: PAGE_SIZE,

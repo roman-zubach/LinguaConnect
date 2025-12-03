@@ -1,9 +1,10 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useCallback } from 'react';
 
-import { fetchUsers, FetchUsersOptions } from '@/services/user/api/fetchUsers';
-import type { UserItem } from '@/services/user/type';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchUsersThunk, resetUsers, setConfig, UsersScope } from '@/store/usersSlice';
 
 type UsePaginatedUsersArgs = {
+    scope: UsersScope;
     filters?: {
         nativeLanguage?: string;
         learningLanguage?: string;
@@ -13,15 +14,15 @@ type UsePaginatedUsersArgs = {
 };
 
 export function usePaginatedUsers({
+    scope,
     filters,
     onlyFavorite = false,
     pageSize = 10,
 }: UsePaginatedUsersArgs) {
-    const [users, setUsers] = useState<UserItem[]>([]);
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [loadingMore, setLoadingMore] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+    const dispatch = useAppDispatch();
+
+    const list = useAppSelector(state => state.users.lists[scope]);
+    const { items, loading, loadingMore, hasMore, page } = list;
 
     const stableFilters = useMemo(
         () => ({
@@ -31,64 +32,55 @@ export function usePaginatedUsers({
         [filters?.nativeLanguage, filters?.learningLanguage],
     );
 
-    const buildOptions = (pageNum: number): FetchUsersOptions => {
-        const options: FetchUsersOptions = {
-            page: pageNum,
-            limit: pageSize,
-        };
-
-        if (onlyFavorite) {
-            options.onlyFavorite = true;
-        }
-
-        if (stableFilters.nativeLanguage) {
-            options.nativeLanguage = stableFilters.nativeLanguage;
-        }
-
-        if (stableFilters.learningLanguage) {
-            options.learningLanguage = stableFilters.learningLanguage;
-        }
-
-        return options;
-    };
-
     useEffect(() => {
-        const load = async () => {
-            setLoading(true);
-            setPage(1);
-            setHasMore(true);
+        dispatch(
+            setConfig({
+                scope,
+                filters: stableFilters,
+                onlyFavorite,
+                pageSize,
+            }),
+        );
 
-            try {
-                const data = await fetchUsers(buildOptions(1));
-                setUsers(data);
-                if (data.length < pageSize) setHasMore(false);
-            } finally {
-                setLoading(false);
-            }
-        };
+        dispatch(resetUsers({ scope }));
 
-        load();
-    }, [onlyFavorite, pageSize, stableFilters]);
+        dispatch(
+            fetchUsersThunk({
+                scope,
+                page: 1,
+                pageSize,
+                filters: stableFilters,
+                onlyFavorite,
+            }),
+        );
+    }, [dispatch, scope, onlyFavorite, pageSize, stableFilters]);
 
-    const loadMore = async () => {
-        if (loadingMore || loading || !hasMore) return;
+    const loadMore = useCallback(() => {
+        if (loading || loadingMore || !hasMore) return;
 
-        setLoadingMore(true);
-        const nextPage = page + 1;
-
-        try {
-            const data = await fetchUsers(buildOptions(nextPage));
-            setUsers(prev => [...prev, ...data]);
-            setPage(nextPage);
-
-            if (data.length < pageSize) setHasMore(false);
-        } finally {
-            setLoadingMore(false);
-        }
-    };
+        dispatch(
+            fetchUsersThunk({
+                scope,
+                page: page + 1,
+                pageSize,
+                filters: stableFilters,
+                onlyFavorite,
+            }),
+        );
+    }, [
+        dispatch,
+        scope,
+        loading,
+        loadingMore,
+        hasMore,
+        page,
+        pageSize,
+        stableFilters,
+        onlyFavorite,
+    ]);
 
     return {
-        users,
+        users: items,
         loading,
         loadingMore,
         hasMore,

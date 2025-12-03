@@ -15,14 +15,15 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import ChatBubble from '@/components/ChatBubble';
-import colors from '@/constants/colors';
 import { spacing } from '@/constants/layout';
 import { useChat } from '@/hooks/useChat';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 import { styles } from './styles';
 
 const ChatScreen: React.FC = () => {
     const { chatId } = useLocalSearchParams<{ chatId: string }>();
+    const colors = useThemeColors();
 
     const { user, messages, loading, loadingMore, hasMore, loadMore, sendMessage } =
         useChat(chatId);
@@ -37,8 +38,8 @@ const ChatScreen: React.FC = () => {
 
     if (loading) {
         return (
-            <SafeAreaView style={styles.safeArea}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+                <View style={styles.centered}>
                     <ActivityIndicator size="large" color={colors.primary} />
                 </View>
             </SafeAreaView>
@@ -46,31 +47,38 @@ const ChatScreen: React.FC = () => {
     }
 
     return (
-        <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
+        <SafeAreaView
+            style={[styles.safeArea, { backgroundColor: colors.background }]}
+            edges={['top', 'left', 'right', 'bottom']}
+        >
             <KeyboardAvoidingView
-                style={styles.container}
+                style={[styles.container, { backgroundColor: colors.background }]}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
             >
-                <View style={styles.headerCard}>
+                <View style={[styles.headerCard, { backgroundColor: colors.surface }]}>
                     <View style={styles.headerLeft}>
                         <TouchableOpacity
                             style={styles.backButton}
                             onPress={() => router.back()}
                             activeOpacity={0.8}
                         >
-                            <Text style={styles.backIcon}>‹</Text>
+                            <Text style={[styles.backIcon, { color: colors.text }]}>‹</Text>
                         </TouchableOpacity>
 
-                        <View style={styles.avatar}>
-                            <Text style={styles.avatarInitial}>{user?.name.charAt(0) ?? '?'}</Text>
+                        <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
+                            <Text style={[styles.avatarInitial, { color: colors.background }]}>
+                                {user?.name.charAt(0) ?? '?'}
+                            </Text>
                         </View>
 
                         <View>
-                            <Text style={styles.headerName}>{user?.name ?? '...'}</Text>
+                            <Text style={[styles.headerName, { color: colors.text }]}>
+                                {user?.name ?? '...'}
+                            </Text>
 
                             <View style={styles.statusRow}>
-                                <Text style={styles.statusText}>
+                                <Text style={[styles.statusText, { color: colors.subtext }]}>
                                     {user?.online ? 'Online' : 'Offline'}
                                 </Text>
                             </View>
@@ -78,8 +86,11 @@ const ChatScreen: React.FC = () => {
                     </View>
 
                     <View style={styles.headerRight}>
-                        <Text style={styles.headerStar}>{user?.isFavorite ? '⭐' : '☆'}</Text>
-                        <Text style={styles.headerMore}>⋯</Text>
+                        <Text style={[styles.headerStar, { color: colors.text }]}>
+                            {user?.isFavorite ? '⭐' : '☆'}
+                        </Text>
+
+                        <Text style={[styles.headerMore, { color: colors.subtext }]}>⋯</Text>
                     </View>
                 </View>
 
@@ -106,28 +117,35 @@ const ChatScreen: React.FC = () => {
                 />
 
                 <View style={styles.inputBarWrapper}>
-                    <View style={styles.inputBar}>
-                        <View style={styles.roundButton}>
-                            <Text style={styles.roundButtonIcon}>＋</Text>
+                    <View style={[styles.inputBar, { backgroundColor: colors.surface }]}>
+                        <View style={[styles.roundButton, { backgroundColor: colors.card }]}>
+                            <Text style={[styles.roundButtonIcon, { color: colors.text }]}>＋</Text>
                         </View>
 
-                        <View style={styles.textInputWrapper}>
+                        <View style={[styles.textInputWrapper, { backgroundColor: colors.card }]}>
                             <TextInput
                                 value={inputValue}
                                 onChangeText={setInputValue}
                                 placeholder="Type a message..."
                                 placeholderTextColor={colors.subtext}
-                                style={styles.textInput}
+                                style={[styles.textInput, { color: colors.text }]}
                                 multiline
                             />
                         </View>
 
-                        <TouchableOpacity style={styles.iconButton}>
-                            <Text style={styles.iconButtonIcon}>🎙️</Text>
+                        <TouchableOpacity
+                            style={[styles.iconButton, { backgroundColor: colors.card }]}
+                        >
+                            <Text style={[styles.iconButtonIcon, { color: colors.text }]}>🎙️</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.sendButtonWrapper} onPress={handleSend}>
-                            <Text style={styles.sendButton}>Send</Text>
+                        <TouchableOpacity
+                            style={[styles.sendButtonWrapper, { backgroundColor: colors.primary }]}
+                            onPress={handleSend}
+                        >
+                            <Text style={[styles.sendButton, { color: colors.background }]}>
+                                Send
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>

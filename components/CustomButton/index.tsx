@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TouchableOpacity, Text, ViewStyle, StyleProp } from 'react-native';
 
-import colors from '@/constants/colors';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 import { styles } from './styles';
 
@@ -30,15 +30,16 @@ const CustomButton: React.FC<Props> = ({
     style,
     children,
 }) => {
+    const colors = useThemeColors();
+
     const bgMap: Record<Variant, string> = {
         primary: colors.primary,
         secondary: colors.surface,
     };
 
-    const isSecondary = variant === 'secondary';
-
     const sizeStyle = size === 'sm' ? styles.buttonSm : styles.buttonMd;
-    const borderStyle = isSecondary ? styles.secondary : undefined;
+
+    const textColor = colors.text;
 
     return (
         <TouchableOpacity
@@ -49,14 +50,17 @@ const CustomButton: React.FC<Props> = ({
             style={[
                 styles.button,
                 sizeStyle,
-                { backgroundColor: bgMap[variant] },
-                borderStyle,
+                {
+                    backgroundColor: bgMap[variant],
+                    borderWidth: variant === 'secondary' ? 1 : 0,
+                    borderColor: variant === 'secondary' ? colors.border : 'transparent',
+                },
                 fullWidth && styles.fullWidth,
                 disabled && styles.disabled,
                 style,
             ]}
         >
-            {children ? children : <Text style={styles.text}>{title}</Text>}
+            {children ? children : <Text style={[styles.text, { color: textColor }]}>{title}</Text>}
         </TouchableOpacity>
     );
 };

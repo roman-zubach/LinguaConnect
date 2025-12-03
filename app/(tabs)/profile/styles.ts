@@ -1,13 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-import colors from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
 import { fontSizes, fontWeights } from '@/constants/typography';
 
 export const styles = StyleSheet.create({
     safe: {
         flex: 1,
-        backgroundColor: colors.background,
     },
     scroll: {
         flex: 1,
@@ -15,7 +13,6 @@ export const styles = StyleSheet.create({
     content: {},
     headerIcon: {
         fontSize: fontSizes.md,
-        color: colors.primary,
     },
 
     card: {
@@ -28,7 +25,6 @@ export const styles = StyleSheet.create({
         width: 96,
         height: 96,
         borderRadius: 48,
-        backgroundColor: colors.primary,
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
@@ -37,25 +33,21 @@ export const styles = StyleSheet.create({
     avatarInitial: {
         fontSize: 40,
         fontWeight: fontWeights.bold,
-        color: colors.background,
     },
     name: {
         textAlign: 'center',
         fontSize: fontSizes.lg,
         fontWeight: fontWeights.bold,
-        color: colors.text,
         marginTop: spacing.xs,
     },
     status: {
         textAlign: 'center',
         fontSize: fontSizes.sm,
-        color: colors.accent,
         marginTop: 2,
         marginBottom: spacing.lg,
     },
 
     infoBlock: {
-        backgroundColor: colors.card,
         borderRadius: radius.md,
         paddingVertical: spacing.sm,
         paddingHorizontal: spacing.md,
@@ -63,17 +55,14 @@ export const styles = StyleSheet.create({
     },
     infoLabel: {
         fontSize: fontSizes.xs,
-        color: colors.subtext,
         marginBottom: 2,
     },
     infoValue: {
         fontSize: fontSizes.md,
-        color: colors.text,
         fontWeight: fontWeights.semibold,
     },
 
     statsBlock: {
-        backgroundColor: colors.card,
         borderRadius: radius.md,
         paddingVertical: spacing.sm,
         paddingHorizontal: spacing.md,
@@ -87,11 +76,9 @@ export const styles = StyleSheet.create({
     },
     statLabel: {
         fontSize: fontSizes.xs,
-        color: colors.subtext,
     },
     statValue: {
         fontSize: fontSizes.sm,
-        color: colors.text,
         fontWeight: fontWeights.semibold,
     },
 
@@ -100,13 +87,11 @@ export const styles = StyleSheet.create({
     },
     accountTitle: {
         fontSize: fontSizes.xs,
-        color: colors.subtext,
         marginBottom: spacing.xs,
     },
     accountRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: colors.card,
         borderRadius: radius.md,
         paddingVertical: spacing.sm,
         paddingHorizontal: spacing.md,
@@ -118,10 +103,6 @@ export const styles = StyleSheet.create({
     },
     accountLabel: {
         fontSize: fontSizes.sm,
-        color: colors.text,
         fontWeight: fontWeights.medium,
-    },
-    accountLabelDanger: {
-        color: colors.danger,
     },
 });

@@ -1,31 +1,43 @@
 import React from 'react';
 
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 import { Link } from 'expo-router';
 
 import CustomButton from '@/components/CustomButton';
-import colors from '@/constants/colors';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
-const NotFoundScreen: React.FC = () => (
-    <View
-        style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: colors.background,
-            padding: 24,
-        }}
-    >
-        <Text style={{ fontSize: 32, color: colors.text, marginBottom: 8 }}>404</Text>
-        <Text style={{ fontSize: 16, color: colors.subtext, marginBottom: 24 }}>
-            Page not found
-        </Text>
+const NotFoundScreen: React.FC = () => {
+    const colors = useThemeColors();
 
-        <Link href="/(tabs)/home" asChild>
-            <CustomButton title="Go Home" />
-        </Link>
-    </View>
-);
+    return (
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <Text style={[styles.code, { color: colors.text }]}>404</Text>
+
+            <Text style={[styles.message, { color: colors.subtext }]}>Page not found</Text>
+
+            <Link href="/(tabs)/home" asChild>
+                <CustomButton title="Go Home" />
+            </Link>
+        </View>
+    );
+};
 
 export default NotFoundScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 24,
+    },
+    code: {
+        fontSize: 32,
+        marginBottom: 8,
+    },
+    message: {
+        fontSize: 16,
+        marginBottom: 24,
+    },
+});

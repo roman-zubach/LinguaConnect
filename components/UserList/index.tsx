@@ -12,10 +12,15 @@ type Props = {
     users: UserItem[];
     loadMore?: () => void;
     loadingMore?: boolean;
-    showFooter?: boolean;
+    showLastMessage?: boolean;
 };
 
-const UsersList: React.FC<Props> = ({ users, loadMore, loadingMore = false }) => {
+const UsersList: React.FC<Props> = ({
+    users,
+    loadMore,
+    loadingMore = false,
+    showLastMessage = false,
+}) => {
     const openChat = (chatId: string) => () => {
         router.push({
             pathname: '/chat/[chatId]',
@@ -27,7 +32,11 @@ const UsersList: React.FC<Props> = ({ users, loadMore, loadingMore = false }) =>
         <UserCard
             name={item.name}
             flag={item.flag}
-            subtitle={item.subtitle}
+            subtitle={
+                showLastMessage
+                    ? item.subtitle
+                    : `Fluent: ${item.nativeLanguage} | Learning: ${item.learningLanguage}`
+            }
             imageUrl={item.imageUrl}
             online={item.online}
             onChat={openChat(item.chatId)}

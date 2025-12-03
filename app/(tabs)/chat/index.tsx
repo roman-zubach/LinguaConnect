@@ -6,13 +6,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from '@/components/Header';
 import UsersList from '@/components/UserList';
-import colors from '@/constants/colors';
 import { usePaginatedUsers } from '@/hooks/usePaginatedUsers';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 const ChatListScreen: React.FC = () => {
     const { users, loading, loadingMore, hasMore, loadMore } = usePaginatedUsers({
+        scope: 'chatList',
         pageSize: 10,
     });
+
+    const colors = useThemeColors();
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
@@ -30,6 +33,7 @@ const ChatListScreen: React.FC = () => {
                     users={users}
                     loadMore={hasMore ? loadMore : undefined}
                     loadingMore={loadingMore}
+                    showLastMessage
                 />
             )}
         </SafeAreaView>

@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import colors from '@/constants/colors';
 import { spacing, radius } from '@/constants/layout';
 import { textStyles } from '@/constants/typography';
 
@@ -30,13 +29,7 @@ export const styles = StyleSheet.create({
         opacity: 0.6,
     },
 
-    secondary: {
-        borderWidth: 1,
-        borderColor: colors.border,
-    },
-
     text: {
         ...textStyles.button,
-        color: colors.text,
     },
 });

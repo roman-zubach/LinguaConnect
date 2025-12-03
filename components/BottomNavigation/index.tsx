@@ -3,48 +3,65 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 import { TABS } from '@/constants/tabs';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 import { styles } from './styles';
 
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-const BottomNavigation: React.FC<BottomTabBarProps> = ({ state, navigation }) => (
-    <View style={styles.nav}>
-        {state.routes.map((route, index) => {
-            const config = TABS.find(tab => tab.path === route.name);
+const BottomNavigation: React.FC<BottomTabBarProps> = ({ state, navigation }) => {
+    const colors = useThemeColors();
 
-            if (!config) {
-                return null;
-            }
+    return (
+        <View
+            style={[
+                styles.nav,
+                {
+                    backgroundColor: colors.surface,
+                    borderTopColor: colors.border,
+                },
+            ]}
+        >
+            {state.routes.map((route, index) => {
+                const config = TABS.find(tab => tab.path === route.name);
 
-            const isActive = state.index === index;
+                if (!config) return null;
 
-            const onPress = () => {
-                if (!isActive) {
-                    navigation.navigate(route.name);
-                }
-            };
+                const isActive = state.index === index;
 
-            return (
-                <TouchableOpacity
-                    key={config.id}
-                    onPress={onPress}
-                    activeOpacity={0.8}
-                    style={styles.tab}
-                >
-                    <Text style={[styles.icon, isActive ? styles.iconActive : styles.iconInactive]}>
-                        {config.icon}
-                    </Text>
+                const onPress = () => {
+                    if (!isActive) navigation.navigate(route.name);
+                };
 
-                    <Text
-                        style={[styles.label, isActive ? styles.labelActive : styles.labelInactive]}
+                return (
+                    <TouchableOpacity
+                        key={config.id}
+                        onPress={onPress}
+                        activeOpacity={0.8}
+                        style={styles.tab}
                     >
-                        {config.label}
-                    </Text>
-                </TouchableOpacity>
-            );
-        })}
-    </View>
-);
+                        <Text
+                            style={[
+                                styles.icon,
+                                { color: isActive ? colors.primary : colors.subtext },
+                            ]}
+                        >
+                            {config.icon}
+                        </Text>
+
+                        <Text
+                            style={[
+                                styles.label,
+                                { color: isActive ? colors.primary : colors.subtext },
+                            ]}
+                        >
+                            {config.label}
+                        </Text>
+                    </TouchableOpacity>
+                );
+            })}
+        </View>
+    );
+};
 
 export default BottomNavigation;

@@ -6,14 +6,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import GreetingCard from '@/components/GreetingCard';
 import UsersList from '@/components/UserList';
-import colors from '@/constants/colors';
 import { usePaginatedUsers } from '@/hooks/usePaginatedUsers';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 import SearchFiltersBar, { SearchFiltersValue } from './components/SearchFiltersBar';
 
 const filters = ['All', 'English', 'Spanish', 'German', 'Nearby'];
 
 const HomeScreen: React.FC = () => {
+    const colors = useThemeColors();
+
     const [filtersState, setFiltersState] = React.useState<SearchFiltersValue>({
         query: '',
         filter: 'All',
@@ -27,6 +29,7 @@ const HomeScreen: React.FC = () => {
     const learningLanguage = filtersState.query.trim() || undefined;
 
     const { users, loading, loadingMore, hasMore, loadMore } = usePaginatedUsers({
+        scope: 'home',
         filters: {
             nativeLanguage,
             learningLanguage,

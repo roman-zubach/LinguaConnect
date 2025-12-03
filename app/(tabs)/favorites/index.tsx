@@ -7,14 +7,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '@/components/Header';
 import InputField from '@/components/InputField';
 import UsersList from '@/components/UserList';
-import colors from '@/constants/colors';
 import { usePaginatedUsers } from '@/hooks/usePaginatedUsers';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 type SearchFavoritesValue = {
     query: string;
 };
 
 const FavoritesScreen = () => {
+    const colors = useThemeColors();
+
     const [filtersState, setFiltersState] = React.useState<SearchFavoritesValue>({
         query: '',
     });
@@ -22,6 +24,7 @@ const FavoritesScreen = () => {
     const learningLanguage = filtersState.query.trim() || undefined;
 
     const { users, loading, loadingMore, hasMore, loadMore } = usePaginatedUsers({
+        scope: 'favorites',
         filters: {
             learningLanguage,
         },

@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import colors from '@/constants/colors';
 import { spacing } from '@/constants/layout';
 import { fontSizes, fontWeights } from '@/constants/typography';
 
@@ -25,7 +24,6 @@ export const styles = StyleSheet.create({
     },
 
     title: {
-        color: colors.text,
         fontSize: fontSizes.md,
         fontWeight: fontWeights.semibold,
         fontStyle: 'italic',

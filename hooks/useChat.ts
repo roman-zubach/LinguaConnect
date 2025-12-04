@@ -4,11 +4,24 @@ import { fetchMessages } from '@/services/message/api/fetchMessages';
 import { sendMessage as sendMessageApi } from '@/services/message/api/sendMessage';
 import type { Message } from '@/services/message/type';
 import { useAppSelector } from '@/store/hooks';
+import { UsersScope } from '@/store/usersSlice';
 
 const PAGE_SIZE = 20;
+const SCOPES: UsersScope[] = ['home', 'favorites', 'chatList'];
 
 export function useChat(chatId?: string) {
-    const user = useAppSelector(state => state.users.items.find(user => user.chatId === chatId));
+    const user = useAppSelector(state => {
+        if (!chatId) return undefined;
+
+        for (const scope of SCOPES) {
+            const list = state.users.lists[scope];
+            const found = list.items.find(u => u.chatId === chatId);
+            if (found) return found;
+        }
+
+        return undefined;
+    });
+
     const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);

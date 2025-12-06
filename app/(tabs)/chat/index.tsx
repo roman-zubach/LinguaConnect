@@ -33,7 +33,6 @@ const ChatListScreen: React.FC = () => {
                     users={users}
                     loadMore={hasMore ? loadMore : undefined}
                     loadingMore={loadingMore}
-                    showLastMessage
                 />
             )}
         </SafeAreaView>

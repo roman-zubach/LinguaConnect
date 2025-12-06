@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, memo } from 'react';
 
 import { ActivityIndicator, FlatList, ListRenderItem } from 'react-native';
 
@@ -12,51 +12,49 @@ type Props = {
     users: UserItem[];
     loadMore?: () => void;
     loadingMore?: boolean;
-    showLastMessage?: boolean;
 };
 
-const UsersList: React.FC<Props> = ({
-    users,
-    loadMore,
-    loadingMore = false,
-    showLastMessage = false,
-}) => {
-    const openChat = (chatId: string) => () => {
+const UsersListComponent: React.FC<Props> = ({ users, loadMore, loadingMore = false }) => {
+    const handleChatPress = useCallback((chatId: string) => {
         router.push({
             pathname: '/chat/[chatId]',
             params: { chatId },
         });
-    };
+    }, []);
 
-    const renderItem: ListRenderItem<UserItem> = ({ item }) => (
-        <UserCard
-            name={item.name}
-            flag={item.flag}
-            subtitle={
-                showLastMessage
-                    ? item.subtitle
-                    : `Fluent: ${item.nativeLanguage} | Learning: ${item.learningLanguage}`
-            }
-            imageUrl={item.imageUrl}
-            online={item.online}
-            onChat={openChat(item.chatId)}
-        />
+    const renderItem: ListRenderItem<UserItem> = useCallback(
+        ({ item }) => (
+            <UserCard
+                name={item.name}
+                flag={item.flag}
+                subtitle={item.subtitle}
+                imageUrl={item.imageUrl}
+                online={item.online}
+                nativeLanguage={item.nativeLanguage}
+                learningLanguage={item.learningLanguage}
+                chatId={item.chatId}
+                onChat={handleChatPress}
+            />
+        ),
+        [handleChatPress],
     );
+
+    const keyExtractor = useCallback((item: UserItem) => item.id, []);
 
     return (
-        <>
-            <FlatList
-                data={users}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                onEndReached={loadMore}
-                onEndReachedThreshold={0.5}
-                ListFooterComponent={loadingMore ? <ActivityIndicator size="small" /> : null}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: spacing.sm }}
-            />
-        </>
+        <FlatList
+            data={users}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            onEndReached={loadMore}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={loadingMore ? <ActivityIndicator size="small" /> : null}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: spacing.sm }}
+        />
     );
 };
+
+const UsersList = memo(UsersListComponent);
 
 export default UsersList;

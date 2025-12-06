@@ -60,6 +60,12 @@ export const styles = StyleSheet.create({
         marginTop: 2,
     },
 
+    extraInfo: {
+        fontSize: fontSizes.xs,
+        marginTop: 4,
+        fontWeight: fontWeights.regular,
+    },
+
     button: {
         paddingVertical: 8,
         paddingHorizontal: 16,

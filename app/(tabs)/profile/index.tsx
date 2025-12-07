@@ -1,13 +1,16 @@
 import React from 'react';
 
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from '@/components/Header';
 import { radius, spacing } from '@/constants/layout';
 import { fontSizes, fontWeights } from '@/constants/typography';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { useThemeColors } from '@/hooks/useThemeColors';
+import { logoutThunk } from '@/store/authSlice';
+import { useAppDispatch } from '@/store/hooks';
 
 const accountItems = [
     { id: 'notifications', icon: '🔔', label: 'Notifications' },
@@ -18,6 +21,20 @@ const accountItems = [
 
 const ProfileScreen: React.FC = () => {
     const colors = useThemeColors();
+    const dispatch = useAppDispatch();
+
+    const { user, initialized, isAuthenticated } = useAuthGuard();
+
+    if (!initialized || !isAuthenticated) return null;
+
+    const avatarLetter = (user?.username?.[0] ?? '?').toUpperCase();
+    const displayName = user?.username ?? 'Unknown user';
+
+    const handleAccountPress = (id: string) => {
+        if (id === 'logout') {
+            dispatch(logoutThunk());
+        }
+    };
 
     return (
         <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
@@ -33,22 +50,23 @@ const ProfileScreen: React.FC = () => {
 
                 <View style={[styles.card, { backgroundColor: colors.surface }]}>
                     <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
-                        <Text style={[styles.avatarInitial, { color: colors.background }]}>J</Text>
+                        <Text style={[styles.avatarInitial, { color: colors.background }]}>
+                            {avatarLetter}
+                        </Text>
                     </View>
 
-                    <Text style={[styles.name, { color: colors.text }]}>John Miller</Text>
+                    <Text style={[styles.name, { color: colors.text }]}>{displayName}</Text>
 
                     <Text style={[styles.status, { color: colors.accent }]}>Online</Text>
 
+                    {/* Поки що демо — пізніше заміниш на реальні дані з бекенду */}
                     <View style={[styles.infoBlock, { backgroundColor: colors.card }]}>
                         <Text style={[styles.infoLabel, { color: colors.subtext }]}>Fluent in</Text>
-
                         <Text style={[styles.infoValue, { color: colors.text }]}>English 🇬🇧</Text>
                     </View>
 
                     <View style={[styles.infoBlock, { backgroundColor: colors.card }]}>
                         <Text style={[styles.infoLabel, { color: colors.subtext }]}>Learning</Text>
-
                         <Text style={[styles.infoValue, { color: colors.text }]}>Spanish 🇪🇸</Text>
                     </View>
 
@@ -57,7 +75,6 @@ const ProfileScreen: React.FC = () => {
                             <Text style={[styles.statLabel, { color: colors.subtext }]}>
                                 Total Chats
                             </Text>
-
                             <Text style={[styles.statValue, { color: colors.text }]}>24</Text>
                         </View>
 
@@ -65,7 +82,6 @@ const ProfileScreen: React.FC = () => {
                             <Text style={[styles.statLabel, { color: colors.subtext }]}>
                                 Favorite Partners
                             </Text>
-
                             <Text style={[styles.statValue, { color: colors.text }]}>6</Text>
                         </View>
                     </View>
@@ -76,8 +92,9 @@ const ProfileScreen: React.FC = () => {
                         </Text>
 
                         {accountItems.map(item => (
-                            <View
+                            <TouchableOpacity
                                 key={item.id}
+                                onPress={() => handleAccountPress(item.id)}
                                 style={[styles.accountRow, { backgroundColor: colors.card }]}
                             >
                                 <Text style={styles.accountIcon}>{item.icon}</Text>
@@ -89,7 +106,7 @@ const ProfileScreen: React.FC = () => {
                                 >
                                     {item.label}
                                 </Text>
-                            </View>
+                            </TouchableOpacity>
                         ))}
                     </View>
                 </View>
@@ -98,17 +115,11 @@ const ProfileScreen: React.FC = () => {
     );
 };
 
-export const styles = StyleSheet.create({
-    safe: {
-        flex: 1,
-    },
-    scroll: {
-        flex: 1,
-    },
+const styles = StyleSheet.create({
+    safe: { flex: 1 },
+    scroll: { flex: 1 },
     content: {},
-    headerIcon: {
-        fontSize: fontSizes.md,
-    },
+    headerIcon: { fontSize: fontSizes.md },
 
     card: {
         borderRadius: radius.lg,

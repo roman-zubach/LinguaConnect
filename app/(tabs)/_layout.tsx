@@ -6,22 +6,20 @@ import { Tabs } from 'expo-router';
 
 import BottomNavigation from '@/components/BottomNavigation';
 import { TABS } from '@/constants/tabs';
+import { useThemeColors } from '@/hooks/useThemeColors';
+import { createTabsScreenOptions } from '@/services/navigation/options';
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const TabsLayout: React.FC = () => {
-    if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-        UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
+    const colors = useThemeColors();
 
     return (
         <Tabs
             tabBar={props => <BottomNavigation {...props} />}
-            screenOptions={{
-                headerShown: false,
-                tabBarStyle: {
-                    backgroundColor: 'transparent',
-                    position: 'absolute',
-                },
-            }}
+            screenOptions={createTabsScreenOptions(colors)}
         >
             {TABS.map(tab => (
                 <Tabs.Screen

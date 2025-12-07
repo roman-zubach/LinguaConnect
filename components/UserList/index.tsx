@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 
 import UserCard from '@/components/UserCard';
 import { spacing } from '@/constants/layout';
+import { ChatRouteParams } from '@/services/navigation/type';
 import { UserItem } from '@/services/user/type';
 
 type Props = {
@@ -16,9 +17,11 @@ type Props = {
 
 const UsersListComponent: React.FC<Props> = ({ users, loadMore, loadingMore = false }) => {
     const handleChatPress = useCallback((chatId: string) => {
+        const params: ChatRouteParams = { chatId };
+
         router.push({
             pathname: '/chat/[chatId]',
-            params: { chatId },
+            params,
         });
     }, []);
 

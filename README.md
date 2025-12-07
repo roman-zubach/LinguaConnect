@@ -1,115 +1,124 @@
-Логи до отимізації:
-[render] UsersList, items: 0 
-LOG [render] UsersList, items: 10 
-LOG [render] UserCard: Sofia M. 
-LOG [render] UserCard: John Doe 
-LOG [render] UserCard: Emilia R. 
-LOG [render] UserCard: Carlos V. 
-LOG [render] UserCard: Anna Petrova 
-LOG [render] UserCard: Ling Zhao 
-LOG [render] UserCard: Pierre Dubois 
-LOG [render] UserCard: Maria Silva 
-LOG [render] UserCard: Hiro Tanaka 
-LOG [render] UserCard: Laura Schmidt 
-LOG [render] UsersList, items: 10 
-LOG [render] UserCard: Sofia M. 
-LOG [render] UserCard: John Doe 
-LOG [render] UserCard: Emilia R. 
-LOG [render] UserCard: Carlos V. 
-LOG [render] UserCard: Anna Petrova 
-LOG [render] UserCard: Ling Zhao 
-LOG [render] UserCard: Pierre Dubois 
-LOG [render] UserCard: Maria Silva 
-LOG [render] UserCard: Hiro Tanaka 
-LOG [render] UserCard: Laura Schmidt 
-LOG [render] UsersList, items: 20 
-LOG [render] UserCard: Sofia M. 
-LOG [render] UserCard: John Doe 
-LOG [render] UserCard: Emilia R. 
-LOG [render] UserCard: Carlos V. 
-LOG [render] UserCard: Anna Petrova 
-LOG [render] UserCard: Ling Zhao 
-LOG [render] UserCard: Pierre Dubois 
-LOG [render] UserCard: Maria Silva 
-LOG [render] UserCard: Hiro Tanaka 
-LOG [render] UserCard: Laura Schmidt 
-LOG [render] UserCard: Oliver Brown 
-LOG [render] UserCard: Isabella Rossi 
-LOG [render] UserCard: Marek Nowak 
-LOG [render] UserCard: Sara Lee 
-LOG [render] UserCard: David Cohen 
-LOG [render] UserCard: Elena Popescu 
-LOG [render] UserCard: Lucas Martin 
-LOG [render] UserCard: Nina Svensson 
-LOG [render] UserCard: Aisha Khan 
-LOG [render] UserCard: Victor Almeida 
-LOG [render] UsersList, items: 20 
-LOG [render] UserCard: Sofia M. 
-LOG [render] UserCard: John Doe 
-LOG [render] UserCard: Emilia R. 
-LOG [render] UserCard: Carlos V. 
-LOG [render] UserCard: Anna Petrova 
-LOG [render] UserCard: Ling Zhao 
-LOG [render] UserCard: Pierre Dubois 
-LOG [render] UserCard: Maria Silva 
-LOG [render] UserCard: Hiro Tanaka 
-LOG [render] UserCard: Laura Schmidt 
-LOG [render] UserCard: Oliver Brown 
-LOG [render] UserCard: Isabella Rossi 
-LOG [render] UserCard: Marek Nowak 
-LOG [render] UserCard: Sara Lee 
-LOG [render] UserCard: David Cohen 
-LOG [render] UserCard: Elena Popescu 
-LOG [render] UserCard: Lucas Martin 
-LOG [render] UserCard: Nina Svensson 
-LOG [render] UserCard: Aisha Khan 
-LOG [render] UserCard: Victor Almeida 
-LOG [render] UsersList, items: 20 
-LOG [render] UserCard: Sofia M. 
-LOG [render] UserCard: John Doe 
-LOG [render] UserCard: Emilia R. 
-LOG [render] UserCard: Carlos V. 
-LOG [render] UserCard: Anna Petrova 
-LOG [render] UserCard: Ling Zhao 
-LOG [render] UserCard: Pierre Dubois 
-LOG [render] UserCard: Maria Silva 
-LOG [render] UserCard: Hiro Tanaka 
-LOG [render] UserCard: Laura Schmidt 
-LOG [render] UserCard: Oliver Brown 
-LOG [render] UserCard: Isabella Rossi 
-LOG [render] UserCard: Marek Nowak 
-LOG [render] UserCard: Sara Lee 
-LOG [render] UserCard: David Cohen 
-LOG [render] UserCard: Elena Popescu 
-LOG [render] UserCard: Lucas Martin 
-LOG [render] UserCard: Nina Svensson 
-LOG [render] UserCard: Aisha Khan 
-LOG [render] UserCard: Victor Almeida
+# LinguaConnect 📱🌍
 
-Логи після:
-LOG  [render] UsersList, items: 0
-LOG  [render] UsersList, items: 10
-LOG  [render] UserCard: Sofia M.
-LOG  [render] UserCard: John Doe
-LOG  [render] UserCard: Emilia R.
-LOG  [render] UserCard: Carlos V.
-LOG  [render] UserCard: Anna Petrova
-LOG  [render] UserCard: Ling Zhao
-LOG  [render] UserCard: Pierre Dubois
-LOG  [render] UserCard: Maria Silva
-LOG  [render] UserCard: Hiro Tanaka
-LOG  [render] UserCard: Laura Schmidt
-LOG  [render] UsersList, items: 10
-LOG  [render] UsersList, items: 20
-LOG  [render] UserCard: Oliver Brown
-LOG  [render] UserCard: Isabella Rossi
-LOG  [render] UserCard: Marek Nowak
-LOG  [render] UserCard: Sara Lee
-LOG  [render] UserCard: David Cohen
-LOG  [render] UserCard: Elena Popescu
-LOG  [render] UserCard: Lucas Martin
-LOG  [render] UserCard: Nina Svensson
-LOG  [render] UserCard: Aisha Khan
-LOG  [render] UserCard: Victor Almeida
-LOG  [render] UsersList, items: 20
-LOG  [render] UsersList, items: 20
+LinguaConnect — це мобільний застосунок для пошуку мовних партнерів та спілкування в реальному часі.  
+Проєкт створений як навчальний, але з архітектурою, максимально наближеною до продакшн-рішення.
+
+---
+
+## 🚀 Основні можливості
+
+- ✅ Авторизація / реєстрація / відновлення пароля
+- ✅ Головна стрічка користувачів з фільтрами
+- ✅ Профіль користувача
+- ✅ Реальні чати між користувачами
+- ✅ Темна / світла тема
+- ✅ Swipe-back навігація
+- ✅ Збереження сесії після перезапуску застосунку
+
+---
+
+## 🧭 Навігація
+
+Використовується **expo-router** з класичною мобільною схемою:
+
+Root Stack
+├── (auth) Stack
+│ ├── login
+│ ├── register
+│ └── forgotPassword
+│
+├── (tabs) Tabs
+│ ├── home
+│ ├── chat
+│ ├── favorites
+│ └── profile
+│
+└── chat/[chatId] — персональний чат
+
+
+✅ Підтримується:
+- swipe-back на iOS
+- dynamic routes
+- захист доступу для авторизованих користувачів
+
+---
+
+## 🧠 Архітектура проєкту
+
+app/ // Навігація та екрани (expo-router)
+components/ // UI-компоненти
+hooks/ // Вся бізнес-логіка
+services/ // API та емуляція бекенду
+store/ // Redux Toolkit
+constants/ // Тема, кольори, відступи
+context/ // ThemeContext
+assets/ // Зображення та іконки
+
+
+### Принципи:
+- ❌ Без бізнес-логіки в компонентах
+- ✅ Вся логіка у кастомних хуках
+- ✅ Всі API-запити тільки через `services`
+- ✅ Redux тільки для глобального стану
+- ✅ Повна типізація
+
+---
+
+## 🔐 Авторизація
+
+- Стан зберігається в Redux
+- Дані відновлюються після перезапуску
+- Захист роутів через guard-хуки
+- Бекенд наразі емуляційний
+
+---
+
+## 💬 Чати
+
+- Динамічні роутинг: `/chat/[chatId]`
+- Пагінація повідомлень
+- Стани: loading / loadingMore
+- Повна типізація
+
+---
+
+## 🎨 Темізація
+
+- Світла та темна теми
+- Глобальна тема через Context
+- useThemeColors для доступу до кольорів
+
+---
+
+## 🛠️ Технології
+
+- React Native (Expo)
+- Expo Router
+- Redux Toolkit
+- TypeScript
+- AsyncStorage
+- Axios
+
+---
+
+## 📸 Скріншоти
+
+> Додайте сюди скріншоти:
+- Login Screen
+![img.png](screen/img.png)
+- Home Screen
+![img_2.png](screen/img_2.png)
+- Chat List Screen
+![img_1.png](screen/img_1.png)
+- Chat Screen
+![img_3.png](screen/img_3.png)
+- Favorite Screen
+![img_5.png](screen/img_5.png)
+- Profile Screen
+![img_4.png](screen/img_4.png)
+
+---
+
+## ✅ Статус
+
+Проєкт завершений як навчальний MVP з продакшн-підходом.

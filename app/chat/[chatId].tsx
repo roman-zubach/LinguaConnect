@@ -20,9 +20,10 @@ import { radius, spacing } from '@/constants/layout';
 import { fontSizes, fontWeights } from '@/constants/typography';
 import { useChat } from '@/hooks/useChat';
 import { useThemeColors } from '@/hooks/useThemeColors';
+import { ChatRouteParams } from '@/services/navigation/type';
 
 const ChatScreen: React.FC = () => {
-    const { chatId } = useLocalSearchParams<{ chatId: string }>();
+    const { chatId } = useLocalSearchParams<ChatRouteParams>();
     const colors = useThemeColors();
 
     const { user, messages, loading, loadingMore, hasMore, loadMore, sendMessage } =

@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import GreetingCard from '@/components/GreetingCard';
 import UsersList from '@/components/UserList';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { usePaginatedUsers } from '@/hooks/usePaginatedUsers';
 import { useThemeColors } from '@/hooks/useThemeColors';
 
@@ -15,6 +16,8 @@ const filters = ['All', 'English', 'Spanish', 'German', 'Nearby'];
 
 const HomeScreen: React.FC = () => {
     const colors = useThemeColors();
+
+    const { user, initialized, isAuthenticated } = useAuthGuard();
 
     const [filtersState, setFiltersState] = React.useState<SearchFiltersValue>({
         query: '',
@@ -30,17 +33,19 @@ const HomeScreen: React.FC = () => {
 
     const { users, loading, loadingMore, hasMore, loadMore } = usePaginatedUsers({
         scope: 'home',
-        filters: {
-            nativeLanguage,
-            learningLanguage,
-        },
+        filters: { nativeLanguage, learningLanguage },
         onlyFavorite: false,
         pageSize: 10,
     });
 
+    if (!initialized || !isAuthenticated) return null;
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-            <GreetingCard username="John" avatarLetter="J" />
+            <GreetingCard
+                username={user?.username ?? 'User'}
+                avatarLetter={(user?.username?.[0] ?? '?').toUpperCase()}
+            />
 
             <SearchFiltersBar filters={filters} value={filtersState} onChange={setFiltersState} />
 
